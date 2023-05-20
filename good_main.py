@@ -3,8 +3,6 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 
-st.title("Taigi Slang Analysis")
-
 # Ref.: https://towardsdatascience.com/advanced-streamlit-session-state-and-callbacks-for-data-labelling-tool-1e4d9ad32a3f
 
 
@@ -85,28 +83,29 @@ target_word = st.selectbox(
         if col.startswith("<") and col.endswith(">")]
     )
 )
+# st.write(splits)
 for split_name in splits:
     st.markdown(
         f"""臺語 proficiency: {split_name} 的有 {splits[split_name]}"""
     )
 SPLIT_DFs = data_split(DATA, splits=splits)
 
-# cols = st.columns(len(SPLIT_DFs))
-plot1, plot2, plot3 = st.columns([15, 15, 15])
-figs = []
-for k in SPLIT_DFs:
-    df = SPLIT_DFs[k]
-    st.markdown(f"""{k} 的有 {df.shape[0]}""")
-    filtered_df = df[target_word].value_counts()
-    fig = px.pie(
-        filtered_df,
-        names=filtered_df.index,
-        values=filtered_df.values,
-        # labels=filtered_df.index,
-        title=f"Proficiency {k} 對 {target_word} 的分布",
-    )
-    figs.append(fig)
+cols = st.columns(len(SPLIT_DFs))
 
-plot1.plotly_chart(figs[1 - 1], use_container_width=True)
-plot2.plotly_chart(figs[2 - 1], use_container_width=True)
-plot3.plotly_chart(figs[3 - 1], use_container_width=True)
+for k, col in zip(SPLIT_DFs, cols):
+    with col:
+        df = SPLIT_DFs[k]
+        pass
+        st.markdown(f"""{k} 的有 {df.shape[0]}""")
+        # st.write(df)
+        # st.write(df.shape)
+        filtered_df = df[target_word].value_counts()
+        fig = px.pie(
+            filtered_df,
+            names=filtered_df.index,
+            values=filtered_df.values,
+            labels=filtered_df.index,
+            title=f"Proficiency {k} 對 {target_word} 的分布",
+        )
+        st.plotly_chart(fig)
+

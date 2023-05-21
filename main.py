@@ -195,10 +195,6 @@ fig_p.update_layout(
         hoverformat="",
     )
 )
-st.plotly_chart(
-    fig_p,
-    use_container_width=True,
-)
     
 bardata = pd.DataFrame(bardata)
 # st.dataframe(bardata)
@@ -283,3 +279,8 @@ fig.update_layout(
     title_text="Taigi Slang Analysis",
 )
 st.plotly_chart(fig, use_container_width=True)
+
+st.plotly_chart(
+    fig_p,
+    use_container_width=True,
+)

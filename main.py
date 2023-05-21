@@ -138,23 +138,57 @@ south0 = [
     "嘉義市",
 ]
 
-other0 = [
-    "花蓮縣",
-    "澎湖縣",
-    "臺東縣",
-    "其他東南亞地區",
-]
+# other0 = [
+#     "花蓮縣",
+#     "澎湖縣",
+#     "臺東縣",
+#     "其他東南亞地區",
+# ]
 
-other0 = [
-    place
-    for place in places
-    if place not in north0 + centr0 + south0
-]
+# other0 = [
+#     place
+#     for place in places
+#     if place not in north0 + centr0 + south0
+# ]
 
-north = north0
-centr = centr0
-south = south0
-other = other0
+# north = north0
+# centr = centr0
+# south = south0
+# other = other0
+
+if any(
+    k not in st.session_state for k in [
+        "north_place",
+        "centr_place",
+        "south_place",
+        "other_place",
+    ]
+):
+    st.session_state['north_place'] = north0
+    st.session_state['centr_place'] = centr0
+    st.session_state['south_place'] = south0
+    st.session_state['other_place'] = [
+        place
+        for place in places
+        if place not in north0 + centr0 + south0
+    ]
+else:
+    st.session_state["centr_place"] = [
+        place
+        for place in places
+        if place not in north
+    ]
+    st.session_state["south_place"] = [
+        place
+        for place in places
+        if place not in north + centr
+    ]
+    
+    st.session_state["other_place"] = [
+        place
+        for place in places
+        if place not in north + centr + south
+    ]
 
 north = st.multiselect(
     "北部地區：",
@@ -175,19 +209,6 @@ south = st.multiselect(
     key="south_place",
 )
 
-
-if "other_place" not in st.session_state:
-    st.session_state["other_place"] = [
-        place
-        for place in places
-        if place not in north + centr + south
-    ]
-else:
-    st.session_state["other_place"] = [
-        place
-        for place in places
-        if place not in north + centr + south
-    ]
 other = st.multiselect(
     "其他地區：",
     options=[place for place in places if place not in north + centr + south],

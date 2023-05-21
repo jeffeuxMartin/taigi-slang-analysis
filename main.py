@@ -169,7 +169,7 @@ split_data = pd.DataFrame(split_data)
 fig_p = px.bar(
     split_data,
     orientation="h",
-    height=180,
+    height=150,
     title=None,
     labels={
         "value": "Proficiency",
@@ -205,7 +205,7 @@ bardata = pd.DataFrame(bardata)
 fig_bar = px.bar(
     bardata,
     orientation="h",
-    height=180,
+    height=150,
     # width=200,
     title=None,
     labels={

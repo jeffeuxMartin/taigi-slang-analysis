@@ -357,7 +357,7 @@ with st.expander("按我自訂地區界線！"):
             
             
         elif current_other_place != previous_selection_records['other_place']:
-            st.balloons()
+            # st.balloons()
             # Update session state of other_place
             print("\033[01;32m""Update session state of other_place""\033[0m")
             new_other_place = current_other_place

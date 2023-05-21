@@ -111,7 +111,7 @@ splits = dict(
 fDATA = load_data()
 
 places = fDATA["主觀出身"].unique().tolist()
-st.write(places)
+# st.write(places)
 
 north = [
     "新竹市",

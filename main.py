@@ -165,6 +165,18 @@ for number in range(1, 7 + 1):
 st.write(split_data)
 # split_data = pd.DataFrame(split_data).T
 # st.dataframe(split_data)
+st.plotly_chart(
+    px.bar(
+        split_data,
+        orientation="h",
+        height=220,
+        title=None,
+        labels={
+            "value": "Proficiency",
+        },
+    ),
+    use_container_width=True,
+)
     
 bardata = pd.DataFrame(bardata)
 # st.dataframe(bardata)
@@ -183,7 +195,7 @@ fig_bar = px.bar(
     # hide row name
     # hover_data=["counts"],
     # hover_name="counts",
-    text_auto="3d",
+    # text_auto="3d",
     # text="counts",
 )
 fig_bar.update_layout(

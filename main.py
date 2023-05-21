@@ -113,6 +113,8 @@ target_word = st.selectbox(
     "請選擇欲查詢的詞彙",
     options=(target_words)
 )
+
+st.audio(f"audio/{target_word}.mp3", format="audio/mp3", start_time=0)
 # for split_name in splits:
 #     st.markdown(
 #         f"""臺語 proficiency: {split_name} 的有 {splits[split_name]}"""

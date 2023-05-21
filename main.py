@@ -230,7 +230,7 @@ other = st.multiselect(
     default=[
         place
         for place in places
-        if place not in north + centr + south
+        if place not in north0 + centr0 + south0
     ],
     key="other_place",
 )

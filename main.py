@@ -165,6 +165,7 @@ for number in range(1, 7 + 1):
 # st.write(split_data)
 # split_data = pd.DataFrame(split_data).T
 # st.dataframe(split_data)
+split_data = pd.DataFrame(split_data)
 st.plotly_chart(
     px.bar(
         split_data,

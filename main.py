@@ -108,9 +108,9 @@ splits = dict(
     精熟=list(range(poH + 1, 7 + 1)),
 )
 
-DATA = load_data()
+fDATA = load_data()
 
-places = DATA["主觀出身"].unique().tolist()
+places = fDATA["主觀出身"].unique().tolist()
 st.write(places)
 
 north = [
@@ -178,7 +178,7 @@ tabnorth, tabcentr, tabsouth, tabother = st.tabs(
 )
 for place_group, place_tab in zip([north, centr, south, other], [tabnorth, tabcentr, tabsouth, tabother]):
     with place_tab:
-        oDATA = DATA[DATA["主觀出身"].isin(place_group)]
+        DATA = fDATA[fDATA["主觀出身"].isin(place_group)]
         SPLIT_DFs = data_split(DATA, splits=splits)
 
         # %%

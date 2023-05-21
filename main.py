@@ -159,6 +159,12 @@ for k, col in zip(SPLIT_DFs, cols):
     #            value=f"{portion}",
     #            )
     bardata[k] = {"counts": df.shape[0]}
+split_data = {}
+for number in range(1, 7 + 1):
+    split_data[number] = DATA[DATA["臺熟"] == number].shape[0]
+split_data = pd.DataFrame(split_data).T
+st.dataframe(split_data)
+    
 bardata = pd.DataFrame(bardata)
 # st.dataframe(bardata)
 fig_bar = px.bar(

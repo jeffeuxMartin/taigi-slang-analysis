@@ -8,6 +8,7 @@ import uuid
 import streamlit as st
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+st.title("臺語粗話文字寫法分析")
 
 # from funcs import *
 

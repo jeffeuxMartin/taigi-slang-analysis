@@ -145,11 +145,11 @@ south0 = [
 #     "其他東南亞地區",
 # ]
 
-other0 = [
-    place
-    for place in places
-    if place not in north0 + centr0 + south0
-]
+# other0 = [
+#     place
+#     for place in places
+#     if place not in north0 + centr0 + south0
+# ]
 
 # north = north0
 # centr = centr0
@@ -212,7 +212,11 @@ south = st.multiselect(
 other = st.multiselect(
     "其他地區：",
     options=[place for place in places if place not in north + centr + south],
-    default=other0,
+    default=[
+        place
+        for place in places
+        if place not in north + centr + south
+    ],
     key="other_place",
 )
 

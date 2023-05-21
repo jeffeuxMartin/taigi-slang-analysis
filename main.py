@@ -205,9 +205,9 @@ def pie_generator(df_valcounts, **kwargs):
         # name="",
         **kwargs
     )
-fig.add_trace(pie_generator(生v, hole=1 - 生v_portion), row=3, col=1)
-fig.add_trace(pie_generator(普v, hole=1 - 普v_portion), row=2, col=1)
-fig.add_trace(pie_generator(熟v, hole=1 - 熟v_portion), row=1, col=1)
+fig.add_trace(pie_generator(生v, hole=1 - 生v_portion), col=1, row=1)
+fig.add_trace(pie_generator(普v, hole=1 - 普v_portion), col=2, row=1)
+fig.add_trace(pie_generator(熟v, hole=1 - 熟v_portion), col=3, row=1)
 # fig.update_annotations(font_size=30)
 fig.update_traces(
     textposition='inside', 

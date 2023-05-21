@@ -182,13 +182,16 @@ else:
     st.session_state["centr_place"] = [
         place
         for place in places
-        if place not in north_now
+        if place not in st.session_state["north_place"]
         and place in centr_now
     ]
     st.session_state["south_place"] = [
         place
         for place in places
-        if place not in north_now + centr_now
+        if place not in (
+            st.session_state["north_place"] +
+            st.session_state["centr_place"]
+        )
         and place in south_now
     ]
     

@@ -148,7 +148,7 @@ other0 = [
 other0 = [
     place
     for place in places
-    if place not in north + centr + south
+    if place not in north0 + centr0 + south0
 ]
 
 north = north0

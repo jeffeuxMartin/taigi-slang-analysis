@@ -109,6 +109,10 @@ splits = dict(
 )
 
 DATA = load_data()
+
+places = DATA
+
+
 target_words = [col
     for col in DATA.columns
     if col.startswith("<") and col.endswith(">")]

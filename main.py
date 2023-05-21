@@ -164,13 +164,13 @@ north = st.multiselect(
 )
 centr = st.multiselect(
     "中部地區：",
-    options=places,
+    options=[place for place in places if place not in north],
     default=centr0,
     key="centr_place",
 )
 south = st.multiselect(
     "南部地區：",
-    options=places,
+    options=[place for place in places if place not in north + centr]
     default=south0,
     key="south_place",
 )

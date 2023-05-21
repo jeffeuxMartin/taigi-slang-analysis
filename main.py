@@ -191,7 +191,7 @@ st.audio(get_audio(target_word))
 #     )
 
 tab_all, tabnorth, tabcentr, tabsouth, tabother = st.tabs(
-    ["全部 :tada:", "北部", "中部", "南部", "其他"]
+    [":tada: 全部 :tada:", "北部", "中部", "南部", "其他"]
 )
 for place_group, place_tab in zip([all_places, north, centr, south, other], [tab_all, tabnorth, tabcentr, tabsouth, tabother]):
     with place_tab:

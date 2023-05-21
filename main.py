@@ -151,6 +151,20 @@ other = [
     if place not in north + centr + south
 ]
 
+count_portion_place = {place_group_name: fDATA[fDATA["主觀出身"].isin(place_group)].shape[0]
+for place_group, place_group_name in zip([north, centr, south, other], ["北部", "中部", "南部", "其他"])}
+
+st.plotly_chart(
+    px.pie(
+        pd.DataFrame(count_portion_place, index=["counts"]).T,
+        values="counts",
+        names=count_portion_place.keys(),
+        title="臺語使用者分布",
+        color_discrete_sequence=px.colors.sequential.RdBu,
+    )
+)        
+    
+
 target_words = [col
     for col in fDATA.columns
     if col.startswith("<") and col.endswith(">")]

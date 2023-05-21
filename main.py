@@ -152,7 +152,7 @@ other = [
 ]
 
 target_words = [col
-    for col in DATA.columns
+    for col in fDATA.columns
     if col.startswith("<") and col.endswith(">")]
 target_word = st.selectbox(
     "請選擇欲查詢的詞彙",

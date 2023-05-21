@@ -113,7 +113,7 @@ fDATA = load_data()
 places = fDATA["主觀出身"].unique().tolist()
 # st.write(places)
 
-north = [
+north0 = [
     "新竹市",
     "新竹縣",
     "臺北市",
@@ -123,14 +123,14 @@ north = [
     "基隆市",
 ]
 
-centr = [
+centr0 = [
     "臺中市",
     "彰化縣",
     "苗栗縣",
     "雲林縣",
 ]
 
-south = [
+south0 = [
     "高雄市",
     "屏東縣",
     "臺南市",
@@ -138,18 +138,23 @@ south = [
     "嘉義市",
 ]
 
-other = [
+other0 = [
     "花蓮縣",
     "澎湖縣",
     "臺東縣",
     "其他東南亞地區",
 ]
 
-other = [
+other0 = [
     place
     for place in places
     if place not in north + centr + south
 ]
+
+north = north0
+centr = centr0
+south = south0
+other = other0
 
 all_places = north + centr + south + other
 

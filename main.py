@@ -120,7 +120,7 @@ target_words = [col
 #     )
 SPLIT_DFs = data_split(DATA, splits=splits)
 
-cols = st.columns([15, 15, 15])
+cols = st.columns(3)
 bardata = {}
 for k, col in zip(SPLIT_DFs, cols):
     df = SPLIT_DFs[k]

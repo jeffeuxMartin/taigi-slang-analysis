@@ -155,86 +155,281 @@ south0 = [
 # centr = centr0
 # south = south0
 # other = other0
+if 0 + 0:
+    if any(
+        k not in st.session_state for k in [
+            "north_place",
+            "centr_place",
+            "south_place",
+            "other_place",
+        ]
+    ):
+        st.session_state['north_place'] = north0
+        st.session_state['centr_place'] = centr0
+        st.session_state['south_place'] = south0
+        st.session_state['other_place'] = [
+            place
+            for place in places
+            if place not in north0 + centr0 + south0
+        ]
+    else:
+        north_now = st.session_state["north_place"]
+        centr_now = st.session_state["centr_place"]
+        south_now = st.session_state["south_place"]
+        other_now = st.session_state["other_place"]
+        st.session_state["north_place"] = north_now
+            
+        st.session_state["centr_place"] = [
+            place
+            for place in places
+            if place not in st.session_state["north_place"]
+            and place in centr_now
+        ]
+        st.session_state["south_place"] = [
+            place
+            for place in places
+            if place not in (
+                st.session_state["north_place"] +
+                st.session_state["centr_place"]
+            )
+            and place in south_now
+        ]
+        
+        st.session_state["other_place"] = [
+            place
+            for place in places
+            if place not in (
+                st.session_state["north_place"] +
+                st.session_state["centr_place"] + 
+                st.session_state["south_place"]
+            )
+        ]
 
-if any(
-    k not in st.session_state for k in [
-        "north_place",
-        "centr_place",
-        "south_place",
-        "other_place",
+    north = st.multiselect(
+        "北部地區：",
+        options=places,
+        default=north0,
+        key="north_place",
+    )
+    centr = st.multiselect(
+        "中部地區：",
+        options=[place for place in places if place not in north],
+        default=centr0,
+        key="centr_place",
+    )
+    south = st.multiselect(
+        "南部地區：",
+        options=[place for place in places if place not in north + centr],
+        default=south0,
+        key="south_place",
+    )
+
+    other = st.multiselect(
+        "其他地區：",
+        options=[place for place in places if place not in north + centr + south],
+        default=[
+            place
+            for place in places
+            if place not in north0 + centr0 + south0
+        ],
+        key="other_place",
+    )
+
+#6666666666666666666
+assert all(i for i in north0 if i in places)
+assert all(i for i in centr0 if i in places)
+assert all(i for i in south0 if i in places)
+
+
+if not all(
+    [
+        'north_place' in st.session_state,
+        'centr_place' in st.session_state,
+        'south_place' in st.session_state,
+        'other_place' in st.session_state,
+        
+        'selection_records' in st.session_state,
     ]
 ):
-    st.session_state['north_place'] = north0
-    st.session_state['centr_place'] = centr0
-    st.session_state['south_place'] = south0
-    st.session_state['other_place'] = [
-        place
-        for place in places
-        if place not in north0 + centr0 + south0
-    ]
+    # Initialize session state
+    print("\033[01;31m""Initialize session state""\033[0m")
+    selection_records = {
+        'north_place': north0,
+        'centr_place': centr0,
+        'south_place': south0,
+        'other_place': [i for i in places if i not in north0 + centr0 + south0],
+        'unselected': [],
+    }
+    st.session_state.north_place = selection_records['north_place']
+    st.session_state.centr_place = selection_records['centr_place']
+    st.session_state.south_place = selection_records['south_place']
+    st.session_state.other_place = selection_records['other_place']
+    
+    st.session_state['selection_records'] = selection_records
+    pprint.pprint(dict(st.session_state))
 else:
-    north_now = st.session_state["north_place"]
-    centr_now = st.session_state["centr_place"]
-    south_now = st.session_state["south_place"]
-    other_now = st.session_state["other_place"]
-    st.session_state["north_place"] = north_now
-        
-    st.session_state["centr_place"] = [
-        place
-        for place in places
-        if place not in st.session_state["north_place"]
-        and place in centr_now
-    ]
-    st.session_state["south_place"] = [
-        place
-        for place in places
-        if place not in (
-            st.session_state["north_place"] +
-            st.session_state["centr_place"]
+    # Update session state
+    print("\033[01;31m""Update session state""\033[0m")
+    current_north_place = st.session_state['north_place']
+    current_centr_place = st.session_state['centr_place']
+    current_south_place = st.session_state['south_place']
+    current_other_place = st.session_state['other_place']
+    current_unselected = [
+        i for i in places
+        if i not in (
+            current_north_place + current_centr_place + current_south_place + current_other_place
         )
-        and place in south_now
     ]
     
-    st.session_state["other_place"] = [
-        place
-        for place in places
-        if place not in (
-            st.session_state["north_place"] +
-            st.session_state["centr_place"] + 
-            st.session_state["south_place"]
-        )
-    ]
+    previous_selection_records = st.session_state['selection_records']
+    
+    if current_north_place != previous_selection_records['north_place']:
+        # Update session state of north_place
+        print("\033[01;32m""Update session state of north_place""\033[0m")
+        new_north_place = current_north_place
+        new_centr_place = [
+            i for i in previous_selection_records['centr_place']
+            if i not in new_north_place
+        ]
+        new_south_place = [
+            i for i in previous_selection_records['south_place']
+            if i not in (new_north_place + new_centr_place)
+        ]
+        new_other_place = [
+            i for i in previous_selection_records['other_place']
+            if i not in (new_north_place + new_centr_place + new_south_place)
+        ]  
+        new_unselected = [
+            i for i in places
+            if i not in (
+                new_north_place + new_centr_place + new_south_place + new_other_place
+            )
+        ]
+        
+    elif current_centr_place != previous_selection_records['centr_place']:
+        # Update session state of centr_place
+        print("\033[01;32m""Update session state of centr_place""\033[0m")
+        new_centr_place = current_centr_place
+        new_north_place = [
+            i for i in previous_selection_records['north_place']
+            if i not in new_centr_place
+        ]
+        new_south_place = [
+            i for i in previous_selection_records['south_place']
+            if i not in (new_north_place + new_centr_place)
+        ]
+        new_other_place = [
+            i for i in previous_selection_records['other_place']
+            if i not in (new_north_place + new_centr_place + new_south_place)
+        ]
+        new_unselected = [
+            i for i in places
+            if i not in (
+                new_north_place + new_centr_place + new_south_place + new_other_place
+            )
+        ]
+        
+    elif current_south_place != previous_selection_records['south_place']:
+        # Update session state of south_place
+        print("\033[01;32m""Update session state of south_place""\033[0m")
+        new_south_place = current_south_place
+        new_north_place = [
+            i for i in previous_selection_records['north_place']
+            if i not in new_south_place
+        ]
+        new_centr_place = [
+            i for i in previous_selection_records['centr_place']
+            if i not in (new_north_place + new_south_place)
+        ]
+        new_other_place = [
+            i for i in previous_selection_records['other_place']
+            if i not in (new_north_place + new_centr_place + new_south_place)
+        ]
+        new_unselected = [
+            i for i in places
+            if i not in (
+                new_north_place + new_centr_place + new_south_place + new_other_place
+            )
+        ]
+        
+        
+    elif current_other_place != previous_selection_records['other_place']:
+        st.balloons()
+        # Update session state of other_place
+        print("\033[01;32m""Update session state of other_place""\033[0m")
+        new_other_place = current_other_place
+        new_north_place = [
+            i for i in previous_selection_records['north_place']
+            if i not in new_other_place
+        ]
+        new_centr_place = [
+            i for i in previous_selection_records['centr_place']
+            if i not in (new_north_place + new_other_place)
+        ]
+        new_south_place = [
+            i for i in previous_selection_records['south_place']
+            if i not in (new_north_place + new_centr_place + new_other_place)
+        ]
+        new_unselected = [
+            i for i in places
+            if i not in (
+                new_north_place + new_centr_place + new_south_place + new_other_place
+            )
+        ]
+        
+    else:
+        new_north_place = current_north_place
+        new_centr_place = current_centr_place
+        new_south_place = current_south_place
+        new_other_place = current_other_place
+        new_unselected = current_unselected
+    
+    selection_records = {
+        'north_place': new_north_place,
+        'centr_place': new_centr_place,
+        'south_place': new_south_place,
+        'other_place': new_other_place,
+        'unselected': new_unselected,
+    }
+    st.session_state['selection_records'] = selection_records
 
+    st.session_state.north_place = st.session_state['selection_records']['north_place']
+    st.session_state.centr_place = st.session_state['selection_records']['centr_place']
+    st.session_state.south_place = st.session_state['selection_records']['south_place']
+    st.session_state.other_place = st.session_state['selection_records']['other_place']
+    pprint.pprint(dict(st.session_state))
+    
+    
 north = st.multiselect(
-    "北部地區：",
-    options=places,
-    default=north0,
-    key="north_place",
+    '北部地區',
+    options=st.session_state['selection_records']['north_place'] + st.session_state['selection_records']["unselected"],
+    # default=st.session_state['selection_records']['north_place'],
+    key='north_place',
 )
+
 centr = st.multiselect(
-    "中部地區：",
-    options=[place for place in places if place not in north],
-    default=centr0,
-    key="centr_place",
+    '中部地區',
+    options=st.session_state['selection_records']['centr_place'] + st.session_state['selection_records']["unselected"],
+    # default=st.session_state['selection_records']['centr_place'],
+    key='centr_place',
 )
+
 south = st.multiselect(
-    "南部地區：",
-    options=[place for place in places if place not in north + centr],
-    default=south0,
-    key="south_place",
+    '南部地區',
+    options=st.session_state['selection_records']['south_place'] + st.session_state['selection_records']["unselected"],
+    # default=st.session_state['selection_records']['south_place'],
+    key='south_place',
 )
 
 other = st.multiselect(
-    "其他地區：",
-    options=[place for place in places if place not in north + centr + south],
-    default=[
-        place
-        for place in places
-        if place not in north0 + centr0 + south0
-    ],
-    key="other_place",
+    '其他地區',
+    options=st.session_state['selection_records']['other_place'] + st.session_state['selection_records']["unselected"],
+    # default=st.session_state['selection_records']['other_place'],
+    key='other_place',
 )
 
+    
+#9999999999999999999
 all_places = north + centr + south + other
 
 with st.expander("按我看臺語使用者分布！"):

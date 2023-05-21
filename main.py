@@ -289,7 +289,7 @@ for place_group, place_tab in zip([north, centr, south, other], [tabnorth, tabce
                 tickvals=[],
                 ticktext=[],
                 showticklabels=False,
-                hoverformat="",
+                hoverformat="counts",
             )
         )
         st.plotly_chart(

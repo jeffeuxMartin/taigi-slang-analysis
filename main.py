@@ -242,6 +242,7 @@ for place_group, place_tab in zip([north, centr, south, other], [tabnorth, tabce
                 "#cc3300",
                 "#ff0000",
             ],
+            text_auto=True,
         )
         fig_p.update_layout(
             showlegend=False,

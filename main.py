@@ -177,24 +177,23 @@ south = st.multiselect(
 
 
 if "other_place" not in st.session_state:
-    other = st.multiselect(
-        "其他地區：",
-        options=[place for place in places if place not in north + centr + south],
-        default=other0,
-        key="other_place",
-    )
+    st.session_state["other_place"] = [
+        place
+        for place in places
+        if place not in north + centr + south
+    ]
 else:
     st.session_state["other_place"] = [
         place
         for place in places
         if place not in north + centr + south
     ]
-    other = st.multiselect(
-        "其他地區：",
-        options=[place for place in places if place not in north + centr + south],
-        default=other0,
-        key="other_place",
-    )
+other = st.multiselect(
+    "其他地區：",
+    options=[place for place in places if place not in north + centr + south],
+    default=other0,
+    key="other_place",
+)
 
 all_places = north + centr + south + other
 

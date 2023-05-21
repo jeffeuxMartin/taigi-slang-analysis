@@ -17,7 +17,7 @@ def load_data():
     return DATA
 
 
-st.title("Taigi Slang Analysis")
+# st.title("Taigi Slang Analysis (better)")
 
 def SliderTriple(statement_dict, prefix, default_boundaries=(3, 5), min_val=1, max_val=7, step=1):
         
@@ -86,9 +86,9 @@ with st.expander("按我調整 Proficiency 分組！"):
     st.markdown("## Proficiency")
     poL, poH = SliderTriple(dict(low=":red[生疏]", mid=":blue[普通]", hig=":green[熟悉]"), prefix=id_p)
 
-with st.expander("按我調整 Frequency 分組！ (Not done)"):
-    st.markdown("## Frequency")
-    foL, foH = SliderTriple(dict(low=":red[少用]", mid=":blue[尚可]", hig=":green[常用]"), prefix=id_f)
+# with st.expander("按我調整 Frequency 分組！"):
+#     st.markdown("## Frequency")
+#     foL, foH = SliderTriple(dict(low=":red[少用]", mid=":blue[尚可]", hig=":green[常用]"), prefix=id_f)
 
 def data_split(
         DATA, 
@@ -106,19 +106,48 @@ splits = dict(
 )
 
 DATA = load_data()
-# options of target_word
 target_words = [col
     for col in DATA.columns
     if col.startswith("<") and col.endswith(">")]
-# target_word = st.selectbox(
-#     "請選擇欲查詢的詞彙",
-#     options=(target_words)
-# )
+target_word = st.selectbox(
+    "請選擇欲查詢的詞彙",
+    options=(target_words)
+)
 # for split_name in splits:
 #     st.markdown(
 #         f"""臺語 proficiency: {split_name} 的有 {splits[split_name]}"""
 #     )
 SPLIT_DFs = data_split(DATA, splits=splits)
+
+# %%
+# st.dataframe(SPLIT_DFs["生疏"].head(10))
+import streamlit as st
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+
+word = "<啥潲>"
+word = target_word
+生v = SPLIT_DFs["生疏"][word].value_counts()
+普v = SPLIT_DFs["普通"][word].value_counts()
+熟v = SPLIT_DFs["精熟"][word].value_counts()
+portion = ([生v.sum(), 普v.sum(), 熟v.sum()])
+portion = np.array(portion) / sum(portion)
+portion /= portion.max()
+生v_portion, 普v_portion, 熟v_portion = portion
+# %%
+fig = make_subplots(
+    rows=3, cols=1,
+    specs=[
+        [{"type": "pie"}], 
+        [{"type": "pie"}], 
+        [{"type": "pie"}], 
+    ],
+    subplot_titles=(
+        "生疏", 
+        "普通", 
+        "精熟"
+    ),
+)
 
 cols = st.columns(3)
 bardata = {}
@@ -126,43 +155,90 @@ for k, col in zip(SPLIT_DFs, cols):
     df = SPLIT_DFs[k]
     portion = f"{df.shape[0] / DATA.shape[0] * 100:.2f} %"
     length = f"{df.shape[0]}"
-    col.metric(label=f"{k}\t({length} / {DATA.shape[0]})",
-               value=f"{portion}",
-               )
+    # col.metric(label=f"{k}\t({length} / {DATA.shape[0]})",
+    #            value=f"{portion}",
+    #            )
     bardata[k] = {"counts": df.shape[0]}
 bardata = pd.DataFrame(bardata)
 # st.dataframe(bardata)
-
-st.write(
-    px.bar(
-        bardata,
-        orientation="h",
-        height=220,
+fig_bar = px.bar(
+    bardata,
+    orientation="h",
+    height=220,
+    # width=200,
+    title=None,
+    labels={
+    #     "variable": "Proficiency",
+        "value": "生疏 v.s 普通 v.s 精熟",
+        # "index": "",
+        "counts": "",
+    },
+    # hide row name
+    # hover_data=["counts"],
+    # hover_name="counts",
+    text_auto="3d",
+    # text="counts",
+)
+fig_bar.update_layout(
+    showlegend=False,
+    # height=800,
+    # width=1600,
+    yaxis=dict(
         title=None,
-        labels={}
+        tickmode="array",
+        tickvals=[],
+        ticktext=[],
+        showticklabels=False,
+        hoverformat="",
     )
 )
-tabs = st.tabs(target_words)
+st.plotly_chart(
+    fig_bar,
+    use_container_width=True,
+)
 
-for target_word, tab in zip(target_words, tabs):
-    with tab:
-        # cols = st.columns(len(SPLIT_DFs))
-        plot1, plot2, plot3 = st.columns([15, 15, 15])
-        figs = []
-        for k, tab in zip(SPLIT_DFs, tabs):
-            df = SPLIT_DFs[k]
-            filtered_df = df[target_word].value_counts()
-            fig = px.pie(
-                filtered_df,
-                names=filtered_df.index,
-                values=filtered_df.values,
-                labels=list(filtered_df.index),
-                title=f"Proficiency {k} \n對 {target_word} 的分布",
-            )
-            # print(filtered_df.index)
-            figs.append(fig)
-
-        plot1.plotly_chart(figs[1 - 1], use_container_width=True)
-        plot2.plotly_chart(figs[2 - 1], use_container_width=True)
-        plot3.plotly_chart(figs[3 - 1], use_container_width=True)
-
+def pie_generator(df_valcounts, **kwargs):
+    return go.Pie(
+        labels=df_valcounts.index,
+        values=df_valcounts.values,
+        # scalegroup="one",
+        # name="",
+        **kwargs
+    )
+fig.add_trace(pie_generator(生v, hole=1 - 生v_portion), row=3, col=1)
+fig.add_trace(pie_generator(普v, hole=1 - 普v_portion), row=2, col=1)
+fig.add_trace(pie_generator(熟v, hole=1 - 熟v_portion), row=1, col=1)
+# fig.update_annotations(font_size=30)
+fig.update_traces(
+    textposition='inside', 
+    # textinfo='percent+label', 
+    textinfo='percent', 
+    # texttemplate="%{label}: %{value} <br />(%{percent})",
+    # texttemplate="%{label} (%{percent})",
+    textfont_size=15.5,
+    # marker=dict(
+    #     colors=["#ff0000", "#0000ff", "#00ff00"],
+    #     line=dict(color='#000000', width=2),
+    # ),
+    # hole=.7,
+    # hoverinfo="percent+name",
+    # hoverinfo="value",
+    hoverinfo="label+value",
+    # hovertemplate="%{label}: %{value} <br />(%{percent})",
+    # hovertemplate="%{value}",
+    # hoverlabel=dict(
+    #     bgcolor="white",
+    #     font_size=16,
+    #     font_family="Rockwell"
+    # ),
+    # disable hover trace
+        
+        
+)
+fig.update_layout(
+    showlegend=True,
+    # height=800,
+    # width=1600,
+    title_text="Taigi Slang Analysis",
+)
+st.plotly_chart(fig, use_container_width=True)

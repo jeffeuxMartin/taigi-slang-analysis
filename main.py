@@ -174,6 +174,15 @@ fig_p = px.bar(
     labels={
         "value": "Proficiency",
     },
+    color_discrete_sequence=[
+        "#ff0000",
+        "#ffff00",
+        "#00ff00",
+        "#00ffff",
+        "#0000ff",
+        "#ff00ff",
+        "#000000",
+    ],
 )
 fig_p.update_layout(
     showlegend=False,

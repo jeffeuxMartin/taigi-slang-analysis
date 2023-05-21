@@ -117,8 +117,8 @@ target_word = st.selectbox(
 def get_audio(word):
     "<姦恁老師>": 
 "<哭枵>": 
-"<姦恁娘>": 
 "<啥潲>": 
+"<姦恁娘>": 
 "<哭爸>": 
     "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/02654e.wav",
     "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/23a45e.wav",

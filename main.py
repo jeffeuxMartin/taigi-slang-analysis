@@ -447,7 +447,8 @@ with st.expander("按我看臺語使用者分布！"):
             names=count_portion_place.keys(),
             title="臺語使用者分布",
             color_discrete_sequence=px.colors.sequential.RdBu,
-        )
+        ),
+        use_container_width=True,
     )        
         
 

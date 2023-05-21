@@ -173,25 +173,33 @@ if any(
         if place not in north0 + centr0 + south0
     ]
 else:
-    north = st.session_state["north_place"]
-    centr = st.session_state["centr_place"]
-    south = st.session_state["south_place"]
-    other = st.session_state["other_place"]
+    north_now = st.session_state["north_place"]
+    centr_now = st.session_state["centr_place"]
+    south_now = st.session_state["south_place"]
+    other_now = st.session_state["other_place"]
+    st.session_state["north_place"] = north_now
+        
     st.session_state["centr_place"] = [
         place
         for place in places
-        if place not in north
+        if place not in north_now
+        and place in centr_now
     ]
     st.session_state["south_place"] = [
         place
         for place in places
         if place not in north + centr
+        and place in south_now
     ]
     
     st.session_state["other_place"] = [
         place
         for place in places
-        if place not in north + centr + south
+        if place not in (
+st.session_state["north_place"] +
+st.session_state["centr_place"] + 
+st.session_state["south_place"]
+        )
     ]
 
 north = st.multiselect(

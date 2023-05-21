@@ -159,7 +159,46 @@ for k, col in zip(SPLIT_DFs, cols):
     #            value=f"{portion}",
     #            )
     bardata[k] = {"counts": df.shape[0]}
-
+split_data = {}
+for number in range(1, 7 + 1):
+    split_data[number] = {"counts": DATA[DATA["臺熟"] == number].shape[0]}
+# st.write(split_data)
+# split_data = pd.DataFrame(split_data).T
+# st.dataframe(split_data)
+split_data = pd.DataFrame(split_data)
+fig_p = px.bar(
+    split_data,
+    orientation="h",
+    height=170,
+    title=None,
+    labels={
+        "value": "Proficiency",
+    },
+    color_discrete_sequence=[
+        "#0000ff",
+        "#00ff33",
+        "#33cc00",
+        "#669900",
+        "#996600",
+        "#cc3300",
+        "#ff0000",
+    ],
+)
+fig_p.update_layout(
+    showlegend=False,
+    yaxis=dict(
+        title=None,
+        tickmode="array",
+        tickvals=[],
+        ticktext=[],
+        showticklabels=False,
+        hoverformat="",
+    )
+)
+st.plotly_chart(
+    fig_p,
+    use_container_width=True,
+)
     
 bardata = pd.DataFrame(bardata)
 # st.dataframe(bardata)
@@ -244,44 +283,3 @@ fig.update_layout(
     title_text="Taigi Slang Analysis",
 )
 st.plotly_chart(fig, use_container_width=True)
-#---------
-split_data = {}
-for number in range(1, 7 + 1):
-    split_data[number] = {"counts": DATA[DATA["臺熟"] == number].shape[0]}
-# st.write(split_data)
-# split_data = pd.DataFrame(split_data).T
-# st.dataframe(split_data)
-split_data = pd.DataFrame(split_data)
-fig_p = px.bar(
-    split_data,
-    orientation="h",
-    height=170,
-    title=None,
-    labels={
-        "value": "Proficiency",
-    },
-    color_discrete_sequence=[
-        "#0000ff",
-        "#00ff33",
-        "#33cc00",
-        "#669900",
-        "#996600",
-        "#cc3300",
-        "#ff0000",
-    ],
-)
-fig_p.update_layout(
-    showlegend=False,
-    yaxis=dict(
-        title=None,
-        tickmode="array",
-        tickvals=[],
-        ticktext=[],
-        showticklabels=False,
-        hoverformat="",
-    )
-)
-st.plotly_chart(
-    fig_p,
-    use_container_width=True,
-)

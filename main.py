@@ -4,6 +4,9 @@ import streamlit as st
 import plotly.express as px
 import pandas as pd
 import uuid
+import streamlit as st
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 # from funcs import *
 
@@ -115,16 +118,14 @@ target_word = st.selectbox(
 )
 
 def get_audio(word):
-    "<姦恁老師>": 
-"<哭枵>": 
-"<啥潲>": 
-"<姦恁娘>": 
-"<哭爸>": 
-    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/02654e.wav",
-    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/23a45e.wav",
-    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/9107b4.wav",
-    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/dd4fd5.wav",
-    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/f48987.wav"
+    return {
+        "<姦恁娘>": "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/02654e.wav",
+        "<哭枵>": "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/23a45e.wav",
+        "<啥潲>": "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/9107b4.wav",
+        "<姦恁老師>": "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/dd4fd5.wav",
+        "<哭爸>": "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/f48987.wav"
+    }[word]
+st.audio(get_audio(target_word))
 # for split_name in splits:
 #     st.markdown(
 #         f"""臺語 proficiency: {split_name} 的有 {splits[split_name]}"""
@@ -133,9 +134,6 @@ SPLIT_DFs = data_split(DATA, splits=splits)
 
 # %%
 # st.dataframe(SPLIT_DFs["生疏"].head(10))
-import streamlit as st
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 word = "<啥潲>"
 word = target_word

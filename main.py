@@ -110,7 +110,8 @@ splits = dict(
 
 DATA = load_data()
 
-places = DATA
+places = DATA["主觀出身"].unique()
+st.write(places)
 
 
 target_words = [col

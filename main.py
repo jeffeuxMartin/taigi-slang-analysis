@@ -151,6 +151,8 @@ other = [
     if place not in north + centr + south
 ]
 
+all_places = north + centr + south + other
+
 with st.expander("按我看臺語使用者分布！"):
     count_portion_place = {place_group_name: fDATA[fDATA["主觀出身"].isin(place_group)].shape[0]
     for place_group, place_group_name in zip([north, centr, south, other], ["北部", "中部", "南部", "其他"])}
@@ -188,10 +190,10 @@ st.audio(get_audio(target_word))
 #         f"""臺語 proficiency: {split_name} 的有 {splits[split_name]}"""
 #     )
 
-tabnorth, tabcentr, tabsouth, tabother = st.tabs(
-    ["北部", "中部", "南部", "其他"]
+tab_all, tabnorth, tabcentr, tabsouth, tabother = st.tabs(
+    ["全部", "北部", "中部", "南部", "其他"]
 )
-for place_group, place_tab in zip([north, centr, south, other], [tabnorth, tabcentr, tabsouth, tabother]):
+for place_group, place_tab in zip([all_places, north, centr, south, other], [tab_all, tabnorth, tabcentr, tabsouth, tabother]):
     with place_tab:
         DATA = fDATA[fDATA["主觀出身"].isin(place_group)]
         SPLIT_DFs = data_split(DATA, splits=splits)

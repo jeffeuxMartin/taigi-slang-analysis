@@ -166,16 +166,28 @@ for number in range(1, 7 + 1):
 # split_data = pd.DataFrame(split_data).T
 # st.dataframe(split_data)
 split_data = pd.DataFrame(split_data)
-st.plotly_chart(
-    px.bar(
-        split_data,
-        orientation="h",
-        height=220,
+fig_p = px.bar(
+    split_data,
+    orientation="h",
+    height=220,
+    title=None,
+    labels={
+        "value": "Proficiency",
+    },
+)
+fig_p.update_layout(
+    showlegend=False,
+    yaxis=dict(
         title=None,
-        labels={
-            "value": "Proficiency",
-        },
-    ),
+        tickmode="array",
+        tickvals=[],
+        ticktext=[],
+        showticklabels=False,
+        hoverformat="",
+    )
+)
+st.plotly_chart(
+    fig_p,
     use_container_width=True,
 )
     

@@ -175,13 +175,13 @@ fig_p = px.bar(
         "value": "Proficiency",
     },
     color_discrete_sequence=[
-        "#ff0000",
-        "#cc3300",
-        "#996600",
-        "#669900",
-        "#33cc00",
-        "#00ff33",
         "#0000ff",
+        "#00ff33",
+        "#33cc00",
+        "#669900",
+        "#996600",
+        "#cc3300",
+        "#ff0000",
     ],
 )
 fig_p.update_layout(

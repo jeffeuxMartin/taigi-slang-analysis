@@ -176,12 +176,12 @@ fig_p = px.bar(
     },
     color_discrete_sequence=[
         "#ff0000",
-        "#ffff00",
-        "#00ff00",
-        "#00ffff",
+        "#cc3300",
+        "#996600",
+        "#669900",
+        "#33cc00",
+        "#00ff33",
         "#0000ff",
-        "#ff00ff",
-        "#000000",
     ],
 )
 fig_p.update_layout(

@@ -110,7 +110,7 @@ splits = dict(
 
 DATA = load_data()
 
-places = DATA["主觀出身"].unique()
+places = DATA["主觀出身"].unique().tolist()
 st.write(places)
 
 

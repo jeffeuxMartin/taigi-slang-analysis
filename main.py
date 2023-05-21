@@ -276,7 +276,7 @@ for place_group, place_tab in zip([north, centr, south, other], [tabnorth, tabce
             # hide row name
             # hover_data=["counts"],
             # hover_name="counts",
-            # text_auto="3d",
+            text_auto=True,
             # text="counts",
         )
         fig_bar.update_layout(
@@ -289,7 +289,7 @@ for place_group, place_tab in zip([north, centr, south, other], [tabnorth, tabce
                 tickvals=[],
                 ticktext=[],
                 showticklabels=False,
-                hoverformat="counts",
+                hoverformat="",
             )
         )
         st.plotly_chart(

@@ -162,7 +162,7 @@ for k, col in zip(SPLIT_DFs, cols):
 split_data = {}
 for number in range(1, 7 + 1):
     split_data[number] = DATA[DATA["臺熟"] == number].shape[0]
-st.write(split_data)
+# st.write(split_data)
 # split_data = pd.DataFrame(split_data).T
 # st.dataframe(split_data)
 st.plotly_chart(

@@ -156,6 +156,36 @@ centr = centr0
 south = south0
 other = other0
 
+north = st.multiselect(
+    "北部地區：",
+    options=places,
+    default=north0,
+    key="north_place",
+)
+centr = st.multiselect(
+    "中部地區：",
+    options=places,
+    default=centr0,
+    key="centr_place",
+)
+south = st.multiselect(
+    "南部地區：",
+    options=places,
+    default=south0,
+    key="south_place",
+)
+other = st.multiselect(
+    "其他地區：",
+    options=places,
+    default=other0,
+    key="other_place",
+    value=[
+    place
+    for place in places
+    if place not in north + centr + south
+]
+)
+
 all_places = north + centr + south + other
 
 with st.expander("按我看臺語使用者分布！"):

@@ -173,6 +173,10 @@ if any(
         if place not in north0 + centr0 + south0
     ]
 else:
+    north = st.session_state["north_place"]
+    centr = st.session_state["centr_place"]
+    south = st.session_state["south_place"]
+    other = st.session_state["other_place"]
     st.session_state["centr_place"] = [
         place
         for place in places

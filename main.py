@@ -151,19 +151,20 @@ other = [
     if place not in north + centr + south
 ]
 
-count_portion_place = {place_group_name: fDATA[fDATA["主觀出身"].isin(place_group)].shape[0]
-for place_group, place_group_name in zip([north, centr, south, other], ["北部", "中部", "南部", "其他"])}
+with st.expander("按我看臺語使用者分布！"):
+    count_portion_place = {place_group_name: fDATA[fDATA["主觀出身"].isin(place_group)].shape[0]
+    for place_group, place_group_name in zip([north, centr, south, other], ["北部", "中部", "南部", "其他"])}
 
-st.plotly_chart(
-    px.pie(
-        pd.DataFrame(count_portion_place, index=["counts"]).T,
-        values="counts",
-        names=count_portion_place.keys(),
-        title="臺語使用者分布",
-        color_discrete_sequence=px.colors.sequential.RdBu,
-    )
-)        
-    
+    st.plotly_chart(
+        px.pie(
+            pd.DataFrame(count_portion_place, index=["counts"]).T,
+            values="counts",
+            names=count_portion_place.keys(),
+            title="臺語使用者分布",
+            color_discrete_sequence=px.colors.sequential.RdBu,
+        )
+    )        
+        
 
 target_words = [col
     for col in fDATA.columns
@@ -222,95 +223,96 @@ for place_group, place_tab in zip([north, centr, south, other], [tabnorth, tabce
             ),
         )
 
-        cols = st.columns(3)
-        bardata = {}
-        for k, col in zip(SPLIT_DFs, cols):
-            df = SPLIT_DFs[k]
-            portion = f"{df.shape[0] / DATA.shape[0] * 100:.2f} %"
-            length = f"{df.shape[0]}"
-            # col.metric(label=f"{k}\t({length} / {DATA.shape[0]})",
-            #            value=f"{portion}",
-            #            )
-            bardata[k] = {"counts": df.shape[0]}
-        split_data = {}
-        for number in range(1, 7 + 1):
-            split_data[number] = {"counts": DATA[DATA["臺熟"] == number].shape[0]}
-        # st.write(split_data)
-        # split_data = pd.DataFrame(split_data).T
-        # st.dataframe(split_data)
-        split_data = pd.DataFrame(split_data)
-        fig_p = px.bar(
-            split_data,
-            orientation="h",
-            height=170,
-            title=None,
-            labels={
-                "value": "Proficiency",
-            },
-            color_discrete_sequence=[
-                "#0000ff",
-                "#00ff33",
-                "#33cc00",
-                "#669900",
-                "#996600",
-                "#cc3300",
-                "#ff0000",
-            ],
-            text_auto=True,
-        )
-        fig_p.update_layout(
-            showlegend=False,
-            yaxis=dict(
+        with st.expander("按我看各分組數量！"):
+            cols = st.columns(3)
+            bardata = {}
+            for k, col in zip(SPLIT_DFs, cols):
+                df = SPLIT_DFs[k]
+                portion = f"{df.shape[0] / DATA.shape[0] * 100:.2f} %"
+                length = f"{df.shape[0]}"
+                # col.metric(label=f"{k}\t({length} / {DATA.shape[0]})",
+                #            value=f"{portion}",
+                #            )
+                bardata[k] = {"counts": df.shape[0]}
+            split_data = {}
+            for number in range(1, 7 + 1):
+                split_data[number] = {"counts": DATA[DATA["臺熟"] == number].shape[0]}
+            # st.write(split_data)
+            # split_data = pd.DataFrame(split_data).T
+            # st.dataframe(split_data)
+            split_data = pd.DataFrame(split_data)
+            fig_p = px.bar(
+                split_data,
+                orientation="h",
+                height=170,
                 title=None,
-                tickmode="array",
-                tickvals=[],
-                ticktext=[],
-                showticklabels=False,
-                hoverformat="",
+                labels={
+                    "value": "Proficiency",
+                },
+                color_discrete_sequence=[
+                    "#0000ff",
+                    "#00ff33",
+                    "#33cc00",
+                    "#669900",
+                    "#996600",
+                    "#cc3300",
+                    "#ff0000",
+                ],
+                text_auto=True,
             )
-        )
-        st.plotly_chart(
-            fig_p,
-            use_container_width=True,
-        )
-            
-        bardata = pd.DataFrame(bardata)
-        # st.dataframe(bardata)
-        fig_bar = px.bar(
-            bardata,
-            orientation="h",
-            height=170,
-            # width=200,
-            title=None,
-            labels={
-            #     "variable": "Proficiency",
-                "value": "生疏 v.s 普通 v.s 精熟",
-                # "index": "",
-                "counts": "",
-            },
-            # hide row name
-            # hover_data=["counts"],
-            # hover_name="counts",
-            text_auto=True,
-            # text="counts",
-        )
-        fig_bar.update_layout(
-            showlegend=False,
-            # height=800,
-            # width=1600,
-            yaxis=dict(
+            fig_p.update_layout(
+                showlegend=False,
+                yaxis=dict(
+                    title=None,
+                    tickmode="array",
+                    tickvals=[],
+                    ticktext=[],
+                    showticklabels=False,
+                    hoverformat="",
+                )
+            )
+            st.plotly_chart(
+                fig_p,
+                use_container_width=True,
+            )
+                
+            bardata = pd.DataFrame(bardata)
+            # st.dataframe(bardata)
+            fig_bar = px.bar(
+                bardata,
+                orientation="h",
+                height=170,
+                # width=200,
                 title=None,
-                tickmode="array",
-                tickvals=[],
-                ticktext=[],
-                showticklabels=False,
-                hoverformat="",
+                labels={
+                #     "variable": "Proficiency",
+                    "value": "生疏 v.s 普通 v.s 精熟",
+                    # "index": "",
+                    "counts": "",
+                },
+                # hide row name
+                # hover_data=["counts"],
+                # hover_name="counts",
+                text_auto=True,
+                # text="counts",
             )
-        )
-        st.plotly_chart(
-            fig_bar,
-            use_container_width=True,
-        )
+            fig_bar.update_layout(
+                showlegend=False,
+                # height=800,
+                # width=1600,
+                yaxis=dict(
+                    title=None,
+                    tickmode="array",
+                    tickvals=[],
+                    ticktext=[],
+                    showticklabels=False,
+                    hoverformat="",
+                )
+            )
+            st.plotly_chart(
+                fig_bar,
+                use_container_width=True,
+            )
 
         def pie_generator(df_valcounts, **kwargs):
             return go.Pie(

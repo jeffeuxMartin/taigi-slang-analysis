@@ -114,7 +114,12 @@ target_word = st.selectbox(
     options=(target_words)
 )
 
-st.audio(f"audio/{target_word}.mp3", format="audio/mp3", start_time=0)
+def get_audio(word):
+    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/02654e.wav",
+    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/23a45e.wav",
+    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/9107b4.wav",
+    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/dd4fd5.wav",
+    "https://homepage.ntu.edu.tw/~r09942097/wavs_taibads/f48987.wav"
 # for split_name in splits:
 #     st.markdown(
 #         f"""臺語 proficiency: {split_name} 的有 {splits[split_name]}"""

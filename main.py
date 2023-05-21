@@ -19,7 +19,7 @@ def load_data():
 
 # st.title("Taigi Slang Analysis (better)")
 
-def SliderTriple(statement_dict, prefix, default_boundaries=(3, 5), min_val=1, max_val=7, step=1):
+def SliderTriple(statement_dict, prefix, default_boundaries=(4, 5), min_val=1, max_val=7, step=1):
         
     def slider_kwargs(statement, key):
         return dict(

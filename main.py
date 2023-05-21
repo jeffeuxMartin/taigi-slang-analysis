@@ -136,12 +136,12 @@ portion /= portion.max()
 生v_portion, 普v_portion, 熟v_portion = portion
 # %%
 fig = make_subplots(
-    rows=3, cols=1,
-    specs=[
-        [{"type": "pie"}], 
-        [{"type": "pie"}], 
-        [{"type": "pie"}], 
-    ],
+    rows=1, cols=3,
+    specs=[[
+        {"type": "pie"}, 
+        {"type": "pie"}, 
+        {"type": "pie"}, 
+    ]],
     subplot_titles=(
         "生疏", 
         "普通", 
